@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 56642001}
   - component: {fileID: 56642002}
   - component: {fileID: 56642003}
+  - component: {fileID: 56642004}
   m_Layer: 3
   m_Name: Interactable
   m_TagString: Untagged
@@ -146,7 +147,7 @@ Transform:
   m_GameObject: {fileID: 56641999}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.49, y: -0.17, z: 0}
+  m_LocalPosition: {x: -5.377, y: -0.854, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -164,7 +165,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7701469647546e6bb9c73901860654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interactable
-  stopDist: 1
+  interactableEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 56642004}
+        m_TargetAssemblyTypeName: CommonEvents, Assembly-CSharp
+        m_MethodName: ToggleActive
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  stopDist: 0.6
 --- !u!61 &56642003
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -209,8 +225,21 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.48449716, y: 0.96555656}
+  m_Size: {x: 0.1626992, y: 0.15366988}
   m_EdgeRadius: 0
+--- !u!114 &56642004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56641999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1e54146517f44d9197f01cec7afbc2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CommonEvents
+  gameObjectAffected: {fileID: 1028077629}
 --- !u!1 &243027239
 GameObject:
   m_ObjectHideFlags: 0

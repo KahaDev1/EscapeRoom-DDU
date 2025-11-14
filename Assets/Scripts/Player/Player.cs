@@ -5,7 +5,7 @@ using UnityEngine.Events;
 public class Player : MonoBehaviour
 {
 
-    Interactable currentInteraction;
+    Interactable currentInteractable;
 
     [SerializeField] float moveSpeed;
     bool moveToDestination;
@@ -59,6 +59,18 @@ public class Player : MonoBehaviour
     {
         if (moveToDestination)
         {
+            if (Mathf.Abs(transform.position.x - destination) < reachDestinationValue)
+            {
+                // Reached destination
+                if (currentInteractable)
+                {
+                    currentInteractable.interactableEvent.Invoke();
+                }
+                moveToDestination = false;
+                currentInteractable = null;
+                return;
+            }
+
             float dir = 1;
             if (transform.position.x > destination)
             {
@@ -67,10 +79,7 @@ public class Player : MonoBehaviour
             Vector2 force = new Vector2(dir, 0);
             rb.AddForce(force * moveSpeed);
 
-            if (Mathf.Abs(transform.position.x - destination) < reachDestinationValue)
-            {
-                moveToDestination = false;
-            }
+
         }
     }
 
@@ -97,7 +106,7 @@ public class Player : MonoBehaviour
     {
         destination = xDestination;
         reachDestinationValue = stopDistance;
-        currentInteraction = objectPressed;
+        currentInteractable = objectPressed;
     }
 
 }

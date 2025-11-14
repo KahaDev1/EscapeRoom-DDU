@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class Interactable : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -12,6 +13,8 @@ public class Interactable : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         CursorManager.instance.SetToMode(CursorManager.ModeOfCursor.Default);
     }
+
+    public UnityEvent interactableEvent;
 
     public float stopDist;
 
