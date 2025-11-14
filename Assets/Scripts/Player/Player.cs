@@ -1,10 +1,11 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
 
-    GameObject currentInteraction;
+    Interactable currentInteraction;
 
     [SerializeField] float moveSpeed;
     bool moveToDestination;
@@ -15,6 +16,8 @@ public class Player : MonoBehaviour
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Animator animator;
 
+    [SerializeField] LayerMask interactableLayer;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -23,16 +26,36 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
         if (Input.GetMouseButtonDown(0))
         {
+            Collider2D detectedCollider = Physics2D.OverlapPoint(mousePos, interactableLayer);
+            if (detectedCollider)
+            {
+                Interactable newInteractable = detectedCollider.GetComponent<Interactable>();
+                if (newInteractable)
+                {
+                    StartMoveTo(newInteractable.transform.position.x, newInteractable.stopDist, newInteractable);
+                }
+            }
+            else
+            {
+                destination = mousePos.x;
+                reachDestinationValue = 0.1f;
+            }
             moveToDestination = true;
-            destination = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
         }
 
         HandleVisual();
     }
 
     void FixedUpdate()
+    {
+        MovePlayer();
+    }
+
+    void MovePlayer()
     {
         if (moveToDestination)
         {
@@ -70,9 +93,11 @@ public class Player : MonoBehaviour
 
     }
 
-    public void MoveTo(float xDestination, float distance, GameObject objectPressed)
+    public void StartMoveTo(float xDestination, float stopDistance, Interactable objectPressed)
     {
-
+        destination = xDestination;
+        reachDestinationValue = stopDistance;
+        currentInteraction = objectPressed;
     }
 
 }
