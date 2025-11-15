@@ -6,11 +6,15 @@ public class Player : MonoBehaviour
 {
 
     Interactable currentInteractable;
+    public bool minigameOverlayActive;
 
     [SerializeField] float moveSpeed;
     bool moveToDestination;
     float destination;
     float reachDestinationValue = 0.1f;
+
+    float footstepAudioRate = 0.6f;
+    float currentFootstepTimer;
 
     Rigidbody2D rb;
     [SerializeField] SpriteRenderer spriteRenderer;
@@ -21,6 +25,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        currentFootstepTimer = footstepAudioRate;
     }
 
 
@@ -28,7 +33,7 @@ public class Player : MonoBehaviour
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !minigameOverlayActive)
         {
             Collider2D detectedCollider = Physics2D.OverlapPoint(mousePos, interactableLayer);
             if (detectedCollider)
@@ -59,16 +64,29 @@ public class Player : MonoBehaviour
     {
         if (moveToDestination)
         {
+
             if (Mathf.Abs(transform.position.x - destination) < reachDestinationValue)
             {
                 // Reached destination
                 if (currentInteractable)
                 {
-                    currentInteractable.interactableEvent.Invoke();
+                    if (currentInteractable.isPossible)
+                        currentInteractable.interactableEvent.Invoke();
                 }
                 moveToDestination = false;
                 currentInteractable = null;
+                currentFootstepTimer = footstepAudioRate;
                 return;
+            }
+
+            if (currentFootstepTimer < footstepAudioRate)
+            {
+                currentFootstepTimer += Time.deltaTime;
+            }
+            else
+            {
+                currentFootstepTimer = 0;
+                AudioManager.instance.PlaySound("FootstepSound");
             }
 
             float dir = 1;
@@ -78,8 +96,6 @@ public class Player : MonoBehaviour
             }
             Vector2 force = new Vector2(dir, 0);
             rb.AddForce(force * moveSpeed);
-
-
         }
     }
 

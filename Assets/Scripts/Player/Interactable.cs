@@ -18,6 +18,8 @@ public class Interactable : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public float stopDist;
 
+    public bool isPossible;
+
     void Start()
     {
 
