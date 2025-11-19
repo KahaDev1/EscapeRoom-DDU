@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class ElectricMinigame : MonoBehaviour
@@ -7,6 +8,10 @@ public class ElectricMinigame : MonoBehaviour
     [SerializeField] Collider2D background;
 
     Player player;
+
+    public ElectrickBrick[] bricks;
+    public Vector2[] positions;
+    public Vector2 emptyPos;
 
     void Start()
     {
