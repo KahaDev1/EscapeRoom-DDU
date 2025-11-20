@@ -9,15 +9,22 @@ public class ElectricMinigame : MonoBehaviour
     [SerializeField] LayerMask overlayLayer;
     [SerializeField] Collider2D background;
 
+    [SerializeField] Sprite backgroundUnlit;
+    [SerializeField] Sprite backgroundLit;
+    [SerializeField] SpriteRenderer backgroundSpriteRenderer;
+
+
     Player player;
 
     public List<ElectrickBrick> bricks;
+    List<ElectrickBrick> bricksInSequence;
     public Vector2[] positions;
     public Vector2 emptyPos;
 
     void Start()
     {
         player = FindAnyObjectByType<Player>();
+        bricksInSequence = new List<ElectrickBrick>();
     }
 
 
@@ -38,11 +45,11 @@ public class ElectricMinigame : MonoBehaviour
     public void CheckIfWon()
     {
         FindObjectWithVector(Vector2.down, Vector2.up);
+        bricksInSequence = new List<ElectrickBrick>();
     }
 
     void FindObjectWithVector(Vector2 pos, Vector2 inputDir, ElectrickBrick oldBrick = null)
     {
-
         for (int i = 0; i < bricks.Count(); i++)
         {
             ElectrickBrick brick = bricks[i];
@@ -50,6 +57,7 @@ public class ElectricMinigame : MonoBehaviour
             {
                 if (brick.currentPos == pos)
                 {
+                    bricksInSequence.Add(brick);
                     if (brick.currentPos == Vector2.up)
                     {
                         if (brick.dirA1 == inputDir * -1)
@@ -104,11 +112,24 @@ public class ElectricMinigame : MonoBehaviour
                     return;
                 }
             }
+            YouLose();
         }
     }
 
     void YouWin()
     {
-        Debug.Log("you did it");
+        backgroundSpriteRenderer.sprite = backgroundLit;
+        for (int i = 0; i < bricksInSequence.Count(); i++)
+        {
+            bricksInSequence[i].spriteRenderer.sprite = bricksInSequence[i].lit;
+        }
+    }
+    void YouLose()
+    {
+        backgroundSpriteRenderer.sprite = backgroundUnlit;
+        for (int i = 0; i < bricks.Count(); i++)
+        {
+            bricks[i].spriteRenderer.sprite = bricks[i].unlit;
+        }
     }
 }

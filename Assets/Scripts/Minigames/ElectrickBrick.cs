@@ -6,6 +6,10 @@ public class ElectrickBrick : MonoBehaviour
 
     public Collider2D collider2d;
     [SerializeField] LayerMask bricklayer;
+    public SpriteRenderer spriteRenderer;
+
+    public Sprite lit;
+    public Sprite unlit;
 
     public Vector2 dirA1;
     public Vector2 dirA2;
@@ -28,6 +32,7 @@ public class ElectrickBrick : MonoBehaviour
         directionsB.Add(dirB1);
         directionsB.Add(dirB2);
         collider2d = GetComponent<Collider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         currentPos = transform.position;
         minigameHandler.bricks.Add(this);
     }
