@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class ElectrickBrick : MonoBehaviour
 {
@@ -11,18 +11,25 @@ public class ElectrickBrick : MonoBehaviour
     public Vector2 dirA2;
     public Vector2 dirB1;
     public Vector2 dirB2;
+    public List<Vector2> directionsA;
+    public List<Vector2> directionsB;
 
     [SerializeField] ElectricMinigame minigameHandler;
-    Vector2 currentPos;
+    public Vector2 currentPos;
 
     bool holdingBrick;
     float timer;
-    float clickTime = 0.1f;
+    float clickTime = 0.3f;
 
     void Start()
     {
+        directionsA.Add(dirA1);
+        directionsA.Add(dirA2);
+        directionsB.Add(dirB1);
+        directionsB.Add(dirB2);
         collider2d = GetComponent<Collider2D>();
         currentPos = transform.position;
+        minigameHandler.bricks.Add(this);
     }
 
     void Update()
@@ -48,6 +55,7 @@ public class ElectrickBrick : MonoBehaviour
                 Vector2 oldpos = currentPos;
                 currentPos = minigameHandler.emptyPos;
                 minigameHandler.emptyPos = oldpos;
+                minigameHandler.CheckIfWon();
             }
             holdingBrick = false;
         }
