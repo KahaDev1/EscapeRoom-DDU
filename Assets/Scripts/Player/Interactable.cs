@@ -17,17 +17,30 @@ public class Interactable : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public UnityEvent interactableEvent;
 
     public float stopDist;
-
     public bool isPossible;
+
+    public string[] linesA;
+    public string[] tooDarkLine;
+
+    Dialouge dialougeManager;
+    Player player;
 
     void Start()
     {
-
+        player = player = FindAnyObjectByType<Player>();
+        dialougeManager = FindFirstObjectByType<Dialouge>();
     }
 
 
-    void Update()
+    public void Dialouge()
     {
-
+        if (player.isDark)
+        {
+            dialougeManager.StartDialouge(tooDarkLine);
+        }
+        else
+        {
+            dialougeManager.StartDialouge(linesA);
+        }
     }
 }

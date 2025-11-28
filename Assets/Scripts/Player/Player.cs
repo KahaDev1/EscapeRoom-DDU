@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,6 +5,7 @@ public class Player : MonoBehaviour
 {
 
     Interactable currentInteractable;
+    Dialouge dialougeManager;
     public bool minigameOverlayActive;
 
     [SerializeField] float moveSpeed;
@@ -16,16 +16,24 @@ public class Player : MonoBehaviour
     float footstepAudioRate = 0.6f;
     float currentFootstepTimer;
 
+    [SerializeField] Transform boundRight;
+    [SerializeField] Transform boundLeft;
+
     Rigidbody2D rb;
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Animator animator;
 
     [SerializeField] LayerMask interactableLayer;
 
+    [SerializeField] GameObject lightbulb;
+    public bool isDark;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        dialougeManager = FindFirstObjectByType<Dialouge>();
         currentFootstepTimer = footstepAudioRate;
+        UpdateTooDark();
     }
 
 
@@ -33,7 +41,7 @@ public class Player : MonoBehaviour
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        if (Input.GetMouseButtonDown(0) && !minigameOverlayActive)
+        if (Input.GetMouseButtonDown(0) && !minigameOverlayActive && !dialougeManager.dialougeActive)
         {
             Collider2D detectedCollider = Physics2D.OverlapPoint(mousePos, interactableLayer);
             if (detectedCollider)
@@ -47,7 +55,16 @@ public class Player : MonoBehaviour
             else
             {
                 destination = mousePos.x;
+                if (destination > boundRight.position.x)
+                {
+                    destination = boundRight.position.x;
+                }
+                else if (destination < boundLeft.position.x)
+                {
+                    destination = boundLeft.position.x;
+                }
                 reachDestinationValue = 0.1f;
+                currentInteractable = null;
             }
             moveToDestination = true;
         }
@@ -64,7 +81,6 @@ public class Player : MonoBehaviour
     {
         if (moveToDestination)
         {
-
             if (Mathf.Abs(transform.position.x - destination) < reachDestinationValue)
             {
                 // Reached destination
@@ -99,16 +115,19 @@ public class Player : MonoBehaviour
         }
     }
 
+    [SerializeField] Transform hand;
     void HandleVisual()
     {
         if (rb.linearVelocityX > 0.1f)
         {
             spriteRenderer.flipX = false;
+            hand.localScale = new Vector3(1, 1, 1);
             animator.Play("Walk");
         }
         else if (rb.linearVelocityX < -0.1f)
         {
             spriteRenderer.flipX = true;
+            hand.localScale = new Vector3(-1, 1, 1);
             animator.Play("Walk");
         }
         else
@@ -125,4 +144,8 @@ public class Player : MonoBehaviour
         currentInteractable = objectPressed;
     }
 
+    public void UpdateTooDark()
+    {
+        isDark = !lightbulb.activeSelf;
+    }
 }

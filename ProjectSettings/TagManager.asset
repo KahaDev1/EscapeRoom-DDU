@@ -13,7 +13,7 @@ TagManager:
   - UI
   - MinigameOverlay
   - Brick
-  - 
+  - UV
   - 
   - 
   - 
@@ -43,6 +43,9 @@ TagManager:
     locked: 0
   - name: Background
     uniqueID: 3003802887
+    locked: 0
+  - name: UV
+    uniqueID: 579247541
     locked: 0
   - name: PlayerLayer
     uniqueID: 2166297567
