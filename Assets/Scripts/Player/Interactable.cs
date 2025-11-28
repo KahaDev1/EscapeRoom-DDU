@@ -14,7 +14,14 @@ public class Interactable : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         CursorManager.instance.SetToMode(CursorManager.ModeOfCursor.Default);
     }
 
-    public UnityEvent interactableEvent;
+    public void ObjectGone()
+    {
+        CursorManager.instance.SetToMode(CursorManager.ModeOfCursor.Default);
+    }
+
+    public UnityEvent alwaysInteractableEvent;
+    public UnityEvent possibleInteractableEvent;
+    public UnityEvent notPossibleInteractableEvent;
 
     public float stopDist;
     public bool isPossible;
@@ -42,5 +49,18 @@ public class Interactable : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         {
             dialougeManager.StartDialouge(linesA);
         }
+    }
+
+    public void InvokeEvent()
+    {
+        if (isPossible)
+        {
+            possibleInteractableEvent.Invoke();
+        }
+        else
+        {
+            notPossibleInteractableEvent.Invoke();
+        }
+        alwaysInteractableEvent.Invoke();
     }
 }

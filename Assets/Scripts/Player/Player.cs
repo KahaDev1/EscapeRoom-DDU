@@ -86,8 +86,7 @@ public class Player : MonoBehaviour
                 // Reached destination
                 if (currentInteractable)
                 {
-                    if (currentInteractable.isPossible)
-                        currentInteractable.interactableEvent.Invoke();
+                    currentInteractable.InvokeEvent();
                 }
                 moveToDestination = false;
                 currentInteractable = null;

@@ -1,9 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ElectricMinigame : MonoBehaviour
 {
+
+    public UnityEvent WinMinigameEvent;
+    public UnityEvent LoseMinigameEvent;
 
     [SerializeField] LayerMask overlayLayer;
     [SerializeField] Collider2D background;
@@ -118,6 +122,7 @@ public class ElectricMinigame : MonoBehaviour
     void YouWin()
     {
         backgroundSpriteRenderer.sprite = backgroundLit;
+        WinMinigameEvent.Invoke();
         for (int i = 0; i < bricksInSequence.Count(); i++)
         {
             bricksInSequence[i].spriteRenderer.sprite = bricksInSequence[i].lit;
@@ -126,6 +131,7 @@ public class ElectricMinigame : MonoBehaviour
     void YouLose()
     {
         backgroundSpriteRenderer.sprite = backgroundUnlit;
+        LoseMinigameEvent.Invoke();
         for (int i = 0; i < bricks.Count(); i++)
         {
             bricks[i].spriteRenderer.sprite = bricks[i].unlit;

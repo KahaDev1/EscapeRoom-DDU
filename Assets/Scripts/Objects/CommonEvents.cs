@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CommonEvents : MonoBehaviour
 {
-    [SerializeField] GameObject gameObjectAffected;
-    [SerializeField] Interactable interactableAffected;
+    [SerializeField] List<GameObject> gameObjectsAffected;
+
+    [SerializeField] List<Interactable> interactablesAffected;
+
     [SerializeField] string sound;
     Player player;
 
@@ -14,7 +17,10 @@ public class CommonEvents : MonoBehaviour
 
     public void ToggleActive()
     {
-        gameObjectAffected.SetActive(!gameObjectAffected.activeInHierarchy);
+        for (int i = 0; i < gameObjectsAffected.Count; i++)
+        {
+            gameObjectsAffected[i].SetActive(!gameObjectsAffected[i].activeInHierarchy);
+        }
     }
 
     public void PlaySound()
@@ -29,6 +35,40 @@ public class CommonEvents : MonoBehaviour
 
     public void ToggleIsPossible()
     {
-        interactableAffected.isPossible = !interactableAffected.isPossible;
+        for (int i = 0; i < interactablesAffected.Count; i++)
+        {
+            interactablesAffected[i].isPossible = !interactablesAffected[i].isPossible;
+        }
+    }
+
+    public void SetIsPossibleFalse()
+    {
+        for (int i = 0; i < interactablesAffected.Count; i++)
+        {
+            interactablesAffected[i].isPossible = false;
+        }
+    }
+
+    public void SetIsPossibleTrue()
+    {
+        for (int i = 0; i < interactablesAffected.Count; i++)
+        {
+            interactablesAffected[i].isPossible = true;
+        }
+    }
+
+    public void SetActiveFalse()
+    {
+        for (int i = 0; i < gameObjectsAffected.Count; i++)
+        {
+            gameObjectsAffected[i].SetActive(false);
+        }
+    }
+    public void SetActiveTrue()
+    {
+        for (int i = 0; i < gameObjectsAffected.Count; i++)
+        {
+            gameObjectsAffected[i].SetActive(true);
+        }
     }
 }
