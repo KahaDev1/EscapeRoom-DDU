@@ -9,17 +9,13 @@ public class Inventory : MonoBehaviour
 
 
     List<Item> items = new List<Item>();
+    List<GameObject> iconGameObjects = new List<GameObject>();
+    List<GameObject> itemGameObjects = new List<GameObject>();
 
-    Item currentItem;
+    public int currentItemIndex = 0;
 
     public GameObject inventoryPanel;
     public Transform hand;
-
-    void Start()
-    {
-
-    }
-
 
     public void AddItem(Item newItem)
     {
@@ -30,11 +26,37 @@ public class Inventory : MonoBehaviour
                 return;
             }
         }
+
         items.Add(newItem);
-        currentItem = newItem;
         //Instantiate new panel
 
-        Instantiate(newItem.iconPrefab, inventoryPanel.transform);
-        Instantiate(newItem.itemPrefab, hand.transform);
+        GameObject newIcon = Instantiate(newItem.iconPrefab, inventoryPanel.transform);
+        InventoryIcon inventoryIconComponent = newIcon.GetComponent<InventoryIcon>();
+        inventoryIconComponent.index = items.Count - 1;
+        inventoryIconComponent.inventoryManager = this;
+
+        iconGameObjects.Add(newIcon);
+
+
+        itemGameObjects.Add(Instantiate(newItem.itemPrefab, hand.transform));
+        currentItemIndex = items.Count - 1;
+    }
+
+    public void IconClicked(int index)
+    {
+        if (currentItemIndex == index)
+        {
+            itemGameObjects[index].SetActive(false);
+            currentItemIndex = -1;
+        }
+        else
+        {
+            if (currentItemIndex != -1)
+            {
+                itemGameObjects[currentItemIndex].SetActive(false);
+            }
+            itemGameObjects[index].SetActive(true);
+            currentItemIndex = index;
+        }
     }
 }

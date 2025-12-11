@@ -4,6 +4,7 @@ using UnityEngine;
 public class CommonEvents : MonoBehaviour
 {
     [SerializeField] List<GameObject> gameObjectsAffected;
+    [SerializeField] List<bool> gameObjectsAffectedREVERSE = new List<bool>();
 
     [SerializeField] List<Interactable> interactablesAffected;
 
@@ -61,14 +62,42 @@ public class CommonEvents : MonoBehaviour
     {
         for (int i = 0; i < gameObjectsAffected.Count; i++)
         {
-            gameObjectsAffected[i].SetActive(false);
+            if (gameObjectsAffectedREVERSE.Count != 0)
+            {
+                if (gameObjectsAffectedREVERSE[i])
+                {
+                    gameObjectsAffected[i].SetActive(true);
+                }
+                else
+                {
+                    gameObjectsAffected[i].SetActive(false);
+                }
+            }
+            else
+            {
+                gameObjectsAffected[i].SetActive(false);
+            }
         }
     }
     public void SetActiveTrue()
     {
         for (int i = 0; i < gameObjectsAffected.Count; i++)
         {
-            gameObjectsAffected[i].SetActive(true);
+            if (gameObjectsAffectedREVERSE.Count != 0)
+            {
+                if (gameObjectsAffectedREVERSE[i])
+                {
+                    gameObjectsAffected[i].SetActive(false);
+                }
+                else
+                {
+                    gameObjectsAffected[i].SetActive(true);
+                }
+            }
+            else
+            {
+                gameObjectsAffected[i].SetActive(true);
+            }
         }
     }
 }
