@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -24,6 +25,7 @@ public class Player : MonoBehaviour
     [SerializeField] Animator animator;
 
     [SerializeField] LayerMask interactableLayer;
+    [SerializeField] LayerMask UILayer;
 
     [SerializeField] GameObject lightbulb;
     public bool isDark;
@@ -54,6 +56,10 @@ public class Player : MonoBehaviour
             }
             else
             {
+                if (mousePos.y < -2.2)
+                {
+                    return;
+                }
                 destination = mousePos.x;
                 if (destination > boundRight.position.x)
                 {
@@ -65,6 +71,7 @@ public class Player : MonoBehaviour
                 }
                 reachDestinationValue = 0.1f;
                 currentInteractable = null;
+
             }
             moveToDestination = true;
         }
